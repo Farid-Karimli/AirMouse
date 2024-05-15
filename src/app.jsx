@@ -2,6 +2,9 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
+import Sidebar from "./components/Sidebar.jsx";
+import Button from "@mui/material/Button";
+import { PlayArrow } from "@mui/icons-material";
 
 const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
@@ -126,9 +129,20 @@ const App = () => {
       <header>
         <p>AirMouse</p>
       </header>
-      <div id="camera">
-        <video autoPlay={true} width={600} height={300} id="video"></video>
-        <button id="start">Stop</button>
+      <div id="content">
+        <Sidebar />
+        <div id="camera">
+          <video
+            autoPlay={true}
+            width={600}
+            height={300}
+            id="video"
+            style={{ transform: "scaleX(-1)" }}
+          ></video>
+          <Button id="start" variant="contained" startIcon={<PlayArrow />}>
+            Start
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -17,6 +17,9 @@ const createWindow = () => {
       nodeIntegration: true,
     },
     titleBarStyle: "hidden",
+    transparency: true,
+    backgroundColor: "#00000000",
+    vibrancy: "fullscreen-ui", // in my case...
   });
 
   // and load the index.html of the app.
