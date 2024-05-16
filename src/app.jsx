@@ -5,7 +5,7 @@ import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import Sidebar from "./components/Sidebar.jsx";
 import Button from "@mui/material/Button";
 import { PlayArrow } from "@mui/icons-material";
-import moveToMiddle from "./mouseControl/main.js";
+import moveMouse from "./mouseControl/main.js";
 
 const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
@@ -91,12 +91,12 @@ const App = () => {
         video,
         startTimeMs
       );
-      setResults(newResults);
+      // setResults(newResults);
 
-      if (newResults.landmarks) {
-        for (const landmarks of newResults.landmarks) {
-          console.log(landmarks);
-        }
+      if (newResults.landmarks.length > 0) {
+        console.log(newResults.landmarks);
+        const indexFingerTip = newResults.landmarks[0][8];
+        moveMouse(indexFingerTip);
       }
     }
 
@@ -142,14 +142,6 @@ const App = () => {
           ></video>
           <Button id="start" variant="contained" startIcon={<PlayArrow />}>
             Start
-          </Button>
-          <Button
-            id="movemiddle"
-            variant="contained"
-            onClick={moveToMiddle}
-            style={{ marginLeft: "10px" }}
-          >
-            Move to Middle
           </Button>
         </div>
       </div>
