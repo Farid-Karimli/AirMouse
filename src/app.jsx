@@ -5,6 +5,7 @@ import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import Sidebar from "./components/Sidebar.jsx";
 import Button from "@mui/material/Button";
 import { PlayArrow } from "@mui/icons-material";
+import moveToMiddle from "./mouseControl/main.js";
 
 const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
@@ -134,13 +135,21 @@ const App = () => {
         <div id="camera">
           <video
             autoPlay={true}
-            width={600}
-            height={300}
+            width={1000}
+            height={500}
             id="video"
             style={{ transform: "scaleX(-1)" }}
           ></video>
           <Button id="start" variant="contained" startIcon={<PlayArrow />}>
             Start
+          </Button>
+          <Button
+            id="movemiddle"
+            variant="contained"
+            onClick={moveToMiddle}
+            style={{ marginLeft: "10px" }}
+          >
+            Move to Middle
           </Button>
         </div>
       </div>

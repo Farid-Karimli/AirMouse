@@ -1,4 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Montserrat:wght@300&family=Questrial&display=swap");
+
+* {
+  font-family: "Questrial", sans-serif;
+  font-weight: 300;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
@@ -31,7 +41,6 @@ header {
 header p {
   box-sizing: border-box;
   font-size: 1.5rem;
-  font-family: "League Spartan", sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -76,4 +85,8 @@ header p {
 
 #video {
   z-index: 1;
+}
+
+#start {
+  margin: 5rem 0;
 }
