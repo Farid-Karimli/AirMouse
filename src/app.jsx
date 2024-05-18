@@ -5,7 +5,7 @@ import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import Sidebar from "./components/Sidebar.jsx";
 import Button from "@mui/material/Button";
 import { PlayArrow } from "@mui/icons-material";
-import moveMouse from "./mouseControl/main.js";
+import { moveMouse, detectClick } from "./mouseControl/main.js";
 
 const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
@@ -67,7 +67,7 @@ const App = () => {
         delegate: "GPU",
       },
       runningMode: "video",
-      numHands: 1,
+      numHands: 2,
     });
 
     handLandmarkerRef.current = handLandmarker; // Store in useRef
@@ -94,9 +94,11 @@ const App = () => {
       // setResults(newResults);
 
       if (newResults.landmarks.length > 0) {
-        console.log(newResults.landmarks);
-        const indexFingerTip = newResults.landmarks[0][8];
-        moveMouse(indexFingerTip);
+        // const indexFingerTip = newResults.landmarks[0][8];
+        moveMouse(newResults.handedness, newResults.landmarks);
+        if (newResults.landmarks.length > 1) {
+          detectClick(newResults.handedness, newResults.landmarks);
+        }
       }
     }
 
@@ -135,8 +137,8 @@ const App = () => {
         <div id="camera">
           <video
             autoPlay={true}
-            width={1000}
-            height={500}
+            width={800}
+            height={400}
             id="video"
             style={{ transform: "scaleX(-1)" }}
           ></video>
