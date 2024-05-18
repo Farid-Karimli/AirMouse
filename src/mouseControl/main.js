@@ -28,12 +28,12 @@ async function convertLandmarksToScreenCoords(landmark) {
 }
 
 async function moveMouse(handedness, landmarks) {
-  var index;
-  if (handedness[0][0].category_name == "Right" || handedness.length == 1) {
+  var index = 0;
+  /* if (handedness[0][0].category_name == "Left" || handedness.length == 1) {
     index = 0;
   } else {
     index = 1;
-  }
+  } */
 
   const indexFingerTip = landmarks[index][8];
 
@@ -42,13 +42,13 @@ async function moveMouse(handedness, landmarks) {
 }
 
 async function detectClick(handedness, landmarks) {
-  const right_hand_index = handedness[0][0].category_name == "Left" ? 1 : 0;
+  const right_hand_index = 1;
 
   const thumb = landmarks[right_hand_index][4];
   const index_finger = landmarks[right_hand_index][8];
 
   const distance = calculateDistance(thumb, index_finger);
-  if (distance < 0.02) {
+  if (distance < 0.05) {
     console.log("Clicking");
     await mouse.leftClick();
   }
