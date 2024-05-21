@@ -19,6 +19,7 @@ const createWindow = () => {
       enableRemoteModule: true,
     },
     titleBarStyle: "hidden",
+    titleBarOverlay: (process.platform == "darwin") ?  false: {color: '#5a9dd1', symbolColor: '#21526e'},
     transparency: true,
     backgroundColor: "#00000000",
     vibrancy: "fullscreen-ui", // in my case...
