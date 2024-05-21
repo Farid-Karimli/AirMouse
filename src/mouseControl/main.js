@@ -11,7 +11,7 @@ const calculateDistance = (point1, point2) => {
 async function moveToMiddle() {
   const width = await screen.width();
   const height = await screen.height();
-  console.log(width, height);
+  //console.log(width, height);
   const middle = new Point(width / 2, height / 2);
   await mouse.move(straightTo(middle));
 }
@@ -49,7 +49,6 @@ async function detectClick(handedness, landmarks) {
 
   const distance = calculateDistance(thumb, index_finger);
   if (distance < 0.05) {
-    console.log("Clicking");
     await mouse.leftClick();
   }
 }
