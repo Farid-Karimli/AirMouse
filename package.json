@@ -1,8 +1,8 @@
 {
-  "name": "interface",
-  "productName": "interface",
+  "name": "airmouse",
+  "productName": "AirMouse",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Control the mouse with your hands.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
