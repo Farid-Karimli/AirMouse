@@ -17,6 +17,7 @@ const createWindow = () => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      backgroundThrottling: false,
     },
     titleBarStyle: "hidden",
     titleBarOverlay: (process.platform == "darwin") ?  false: {color: '#5a9dd1', symbolColor: '#21526e'},

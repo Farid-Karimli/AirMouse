@@ -50,6 +50,7 @@ module.exports = {
         },
       },
     },
+    
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
     new FusesPlugin({
@@ -62,4 +63,16 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'Farid-Karimli',
+          name: 'AirMouse'
+        },
+        prerelease: true
+      }
+    }
+  ]
 };
