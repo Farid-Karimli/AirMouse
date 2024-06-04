@@ -4,13 +4,15 @@ const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: "./src/images/AirMouse1",
+    icon: "./src/assets/images/AirMouse1.ico",
   },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      config: {
+        loadingGif: "src/assets/images/loading.gif",
+      },
     },
     {
       name: "@electron-forge/maker-zip",
@@ -71,7 +73,8 @@ module.exports = {
           owner: 'Farid-Karimli',
           name: 'AirMouse'
         },
-        prerelease: true
+        prerelease: false,
+        draft: false
       }
     }
   ]
