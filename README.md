@@ -1,6 +1,6 @@
 # AirMouse 
 
-### Ongoing project - alpha version
+### Ongoing project - pre-alpha version
 
 AirMouse redefines the way we interact with our computers. Built using Electron and Mediapipe, this application allows you to control your mouse pointer simply by pointing and gesturing with your fingers.
 
