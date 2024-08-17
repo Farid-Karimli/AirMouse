@@ -1,4 +1,9 @@
-const { app, BrowserWindow } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  systemPreferences,
+  desktopCapturer,
+} = require("electron");
 const path = require("node:path");
 const { session } = require("electron");
 
@@ -6,6 +11,17 @@ const { session } = require("electron");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
+
+const askMediaAccess = async () => {
+  console.log("Asking for media access");
+
+  const camera = await systemPreferences
+    .askForMediaAccess("camera")
+    .then((allowed) => console.log("Camera is allowed"));
+
+  const microphone = await systemPreferences.askForMediaAccess("microphone");
+  return camera === "granted" && microphone === "granted";
+};
 
 const createWindow = () => {
   // Create the browser window.
@@ -17,15 +33,18 @@ const createWindow = () => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      webSecurity: false,
     },
     titleBarStyle: "hidden",
-    titleBarOverlay: (process.platform == "darwin") ?  false: {color: '#5a9dd1', symbolColor: '#21526e'},
+    titleBarOverlay:
+      process.platform == "darwin"
+        ? false
+        : { color: "#5a9dd1", symbolColor: "#21526e" },
     transparency: true,
     backgroundColor: "#00000000",
-    vibrancy: "fullscreen-ui", // in my case...
+    vibrancy: "fullscreen-ui",
   });
 
-  // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
@@ -37,6 +56,7 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
+  askMediaAccess();
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
