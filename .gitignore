@@ -92,3 +92,5 @@ typings/
 out/
 
 .vscode/
+
+*.code-workspace
