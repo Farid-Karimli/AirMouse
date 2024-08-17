@@ -7,12 +7,26 @@ import Button from "@mui/material/Button";
 import { PlayArrow } from "@mui/icons-material";
 import { moveMouse, detectClick } from "./mouseControl/main.js";
 
+import {
+  exponentialSmoothing,
+  movingAverageSmoothing,
+} from "./mouseControl/smoothing.js";
+
+import { Context } from "./utils/context.js";
+import { config } from "./utils/config.js";
+
 const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
   const handLandmarkerRef = useRef(null); // Use useRef for mutable handLandmarker
   const [lastVideoTime, setLastVideoTime] = useState(-1);
   const [results, setResults] = useState(null);
   const animationFrameId = useRef(null); // Track the animation frame ID
+  const [smoothedLandmarks, setSmoothedLandmarks] = useState(-1);
+
+  const [configuration, setConfiguration] = useState(config);
+
+  const alpha = configuration.smoothness;
+  const bufferSize = configuration.bufferSize;
 
   useEffect(() => {
     startVideo();
@@ -37,6 +51,26 @@ const App = () => {
     };
   }, []);
 
+  const smoothLandmarks = (newLandmarks) => {
+    if (smoothedLandmarks.length === 0) {
+      setSmoothedLandmarks(newLandmarks);
+      return newLandmarks;
+    }
+    const smoothed = newLandmarks.map((landmark, index) => {
+      const previous =
+        smoothedLandmarks.length > 0 ? smoothedLandmarks[index] : landmark;
+
+      return {
+        x: alpha * landmark.x + (1 - alpha) * previous.x,
+        y: alpha * landmark.y + (1 - alpha) * previous.y,
+        z: alpha * landmark.z + (1 - alpha) * previous.z,
+      };
+    });
+
+    setSmoothedLandmarks(smoothed);
+    return smoothed;
+  };
+
   const startVideo = () => {
     const videoElement = document.getElementById("video");
     if (videoElement) {
@@ -44,10 +78,10 @@ const App = () => {
         .getUserMedia({ video: true })
         .then((stream) => {
           videoElement.srcObject = stream;
-          videoElement.onloadedmetadata = () => {
-            videoElement.play(); // Ensure the video plays once metadata is loaded
+          videoElement.onloadeddata = () => {
+            console.log("Video metadata loaded and playing");
+            videoElement.play();
           };
-          console.log("Webcam connected");
         })
         .catch((error) => {
           alert("Could not connect to webcam: " + error.message);
@@ -71,7 +105,6 @@ const App = () => {
     });
 
     handLandmarkerRef.current = handLandmarker; // Store in useRef
-    console.log("HandLandmarker loaded: ", handLandmarker);
   };
 
   const predictWebcam = useCallback(async () => {
@@ -95,9 +128,18 @@ const App = () => {
 
       if (newResults.landmarks.length > 0) {
         // const indexFingerTip = newResults.landmarks[0][8];
-        moveMouse(newResults.handedness, newResults.landmarks);
+        // const smoothed = smoothLandmarks(newResults.landmarks[0]);
+        const smoothed = movingAverageSmoothing(
+          newResults.landmarks[0],
+          smoothedLandmarks,
+          setSmoothedLandmarks,
+          bufferSize
+        );
+
+        moveMouse(newResults.handedness, smoothed);
+
         if (newResults.landmarks.length > 1) {
-          detectClick(newResults.handedness, newResults.landmarks);
+          detectClick(newResults.handedness, smoothed);
         }
       }
     }
@@ -133,7 +175,10 @@ const App = () => {
         <p>AirMouse</p>
       </header>
       <div id="content">
-        <Sidebar />
+        <Sidebar
+          configuration={configuration}
+          setConfiguration={setConfiguration}
+        />
         <div id="camera">
           <video
             autoPlay={true}

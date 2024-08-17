@@ -35,7 +35,7 @@ async function moveMouse(handedness, landmarks) {
     index = 1;
   } */
 
-  const indexFingerTip = landmarks[index][8];
+  const indexFingerTip = landmarks[8];
 
   const screenCoords = await convertLandmarksToScreenCoords(indexFingerTip);
   await mouse.move(straightTo(screenCoords));
