@@ -1,6 +1,6 @@
 # AirMouse 
 
-### Ongoing project - pre-alpha version
+### Alpha version
 
 AirMouse redefines the way we interact with our computers. Built using Electron and Mediapipe, this application allows you to control your mouse pointer simply by pointing and gesturing with your fingers.
 
@@ -10,3 +10,26 @@ By leveraging the power of machine learning and computer vision, AirMouse transl
 
 https://github.com/Farid-Karimli/AirMouse/assets/72581377/6952cc14-41d6-4934-85a7-3d32a5f0b108
 
+
+## Development and contributing
+
+Contributions are welcome! Follow the instructions below how to run the app. You need to have Node.js installed on your system.
+
+Clone the repo and install dependencies
+
+```
+git clone https://github.com/Farid-Karimli/AirMouse.git
+npm install
+```
+
+To run the app:
+
+```
+npm run start
+```
+
+To build:
+
+```
+npm make
+```
