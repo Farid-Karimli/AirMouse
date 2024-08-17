@@ -34,6 +34,7 @@ const createWindow = () => {
       contextIsolation: false,
       enableRemoteModule: true,
       webSecurity: false,
+      backgroundThrottling: false,
     },
     titleBarStyle: "hidden",
     titleBarOverlay:
