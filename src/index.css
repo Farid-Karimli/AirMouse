@@ -85,8 +85,16 @@ header p {
 
 #video {
   z-index: 1;
+  width: 70%;
+  height: auto;
+  display: block;
 }
 
 #start {
   margin: 5rem 0;
+}
+
+.settings {
+  width: 80%;
+  margin: 0 auto;
 }
