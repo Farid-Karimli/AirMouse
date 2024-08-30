@@ -99,12 +99,12 @@ const App = () => {
         video,
         startTimeMs
       );
-      // setResults(newResults);
 
       if (newResults.landmarks.length > 0) {
-        // const indexFingerTip = newResults.landmarks[0][8];
-        // const smoothed = smoothLandmarks(newResults.landmarks[0]);
-        const handIndex = getHandIndex(configuration.mainHand);
+        const handIndex = getHandIndex(
+          configuration.mainHand,
+          newResults.handedness
+        );
         const smoothed = movingAverageSmoothing(
           newResults.landmarks[handIndex],
           smoothedLandmarks,
@@ -115,6 +115,18 @@ const App = () => {
         moveMouse(smoothed);
 
         if (newResults.landmarks.length > 1) {
+          console.log(
+            "Index 0 handedness: ",
+            newResults.handedness[0][0].categoryName
+          );
+          console.log(
+            "Index 1 handedness: ",
+            newResults.handedness[1][0].categoryName
+          );
+          console.log(
+            `Index of ${configuration.mainHand} hand: ${handIndex}  `
+          );
+
           detectClick(newResults.handedness, newResults.landmarks);
         }
       }

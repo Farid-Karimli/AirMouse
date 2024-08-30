@@ -1,4 +1,4 @@
-id2landmark = {
+const id2landmark = {
   0: "WRIST",
   1: "THUMB_CMC",
   2: "THUMB_MCP",
@@ -22,7 +22,7 @@ id2landmark = {
   20: "PINKY_TIP",
 };
 
-landmark2id = {
+const landmark2id = {
   WRIST: 0,
   THUMB_CMC: 1,
   THUMB_MCP: 2,

@@ -51,8 +51,13 @@ async function detectClick(handedness, landmarks) {
   }
 }
 
-const getHandIndex = (configHand) => {
-  if (configHand === "Left") {
+const getHandIndex = (configHand, handedness) => {
+  if (handedness.length === 1) {
+    console.log("One hand detected. ", handedness);
+    return 0;
+  }
+  console.log("Two hands detected. ", handedness);
+  if (handedness[0][0].categoryName === configHand) {
     return 1;
   } else {
     return 0;
