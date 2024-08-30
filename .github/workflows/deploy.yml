@@ -1,0 +1,53 @@
+name: Deploy
+on:
+  push:
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - main
+jobs:
+  deployWindows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Package
+        run: npm run make
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: Package app
+          path: out/make
+      - name: Release (with .exe file)
+        uses: softprops/action-gh-release@v1
+        with:
+          files: out/make/squirrel.windows/x64/*.exe
+  deployMac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Package
+        run: npm run make
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: Package app
+          path: out/make
+      - name: Release (with .dmg file)
+        uses: softprops/action-gh-release@v1
+        with:
+          files: out/AirMouse-darwin-x64/AirMouse.app

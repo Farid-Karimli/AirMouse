@@ -1,4 +1,6 @@
 export const config = {
+  mainHand: "Right", // ["Left", "Right"]
+
   clickGesture: "index-thumb-pinch",
   clickGestureThreshold: 0.5,
 

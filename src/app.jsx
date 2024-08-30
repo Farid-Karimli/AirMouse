@@ -5,14 +5,13 @@ import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import Sidebar from "./components/Sidebar.jsx";
 import Button from "@mui/material/Button";
 import { PlayArrow } from "@mui/icons-material";
-import { moveMouse, detectClick } from "./mouseControl/main.js";
+import { moveMouse, detectClick, getHandIndex } from "./mouseControl/main.js";
 
 import {
   exponentialSmoothing,
   movingAverageSmoothing,
 } from "./mouseControl/smoothing.js";
 
-import { Context } from "./utils/context.js";
 import { config } from "./utils/config.js";
 
 const App = () => {
@@ -39,37 +38,13 @@ const App = () => {
       }
     });
 
-    // Add event listener to the start button
-    const startButton = document.getElementById("start");
-    startButton.addEventListener("click", startDetection);
-
     // Cleanup event listeners on unmount
     return () => {
       video.removeEventListener("loadeddata", predictWebcam);
-      startButton.removeEventListener("click", startDetection);
+      // startButton.removeEventListener("click", startDetection);
       cancelAnimationFrame(animationFrameId.current); // Cancel any pending animation frames
     };
   }, []);
-
-  const smoothLandmarks = (newLandmarks) => {
-    if (smoothedLandmarks.length === 0) {
-      setSmoothedLandmarks(newLandmarks);
-      return newLandmarks;
-    }
-    const smoothed = newLandmarks.map((landmark, index) => {
-      const previous =
-        smoothedLandmarks.length > 0 ? smoothedLandmarks[index] : landmark;
-
-      return {
-        x: alpha * landmark.x + (1 - alpha) * previous.x,
-        y: alpha * landmark.y + (1 - alpha) * previous.y,
-        z: alpha * landmark.z + (1 - alpha) * previous.z,
-      };
-    });
-
-    setSmoothedLandmarks(smoothed);
-    return smoothed;
-  };
 
   const startVideo = () => {
     const videoElement = document.getElementById("video");
@@ -129,17 +104,18 @@ const App = () => {
       if (newResults.landmarks.length > 0) {
         // const indexFingerTip = newResults.landmarks[0][8];
         // const smoothed = smoothLandmarks(newResults.landmarks[0]);
+        const handIndex = getHandIndex(configuration.mainHand);
         const smoothed = movingAverageSmoothing(
-          newResults.landmarks[0],
+          newResults.landmarks[handIndex],
           smoothedLandmarks,
           setSmoothedLandmarks,
           bufferSize
         );
 
-        moveMouse(newResults.handedness, smoothed);
+        moveMouse(smoothed);
 
         if (newResults.landmarks.length > 1) {
-          detectClick(newResults.handedness, smoothed);
+          detectClick(newResults.handedness, newResults.landmarks);
         }
       }
     }
@@ -187,7 +163,12 @@ const App = () => {
             id="video"
             style={{ transform: "scaleX(-1)" }}
           ></video>
-          <Button id="start" variant="contained" startIcon={<PlayArrow />}>
+          <Button
+            id="start"
+            variant="contained"
+            startIcon={<PlayArrow />}
+            onClick={startDetection}
+          >
             Start
           </Button>
         </div>

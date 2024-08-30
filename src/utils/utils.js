@@ -45,3 +45,5 @@ landmark2id = {
   PINKY_DIP: 19,
   PINKY_TIP: 20,
 };
+
+export { id2landmark, landmark2id };

@@ -64,7 +64,7 @@ const Sidebar = ({ configuration, setConfiguration }) => {
       <h3>Settings</h3>
       <p>Edit gestures, main hand and smoothing method here</p>
 
-      <div class="settings">
+      <div className="settings">
         <Grid container spacing={2}>
           <Grid item xs={10} md={10}>
             <RowRadioButtonsGroup

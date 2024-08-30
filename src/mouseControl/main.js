@@ -1,5 +1,5 @@
 import { mouse, Point, straightTo, screen } from "@nut-tree/nut-js";
-// import { id2landmark, landmark2id } from "../utils/utils.js";
+import { id2landmark, landmark2id } from "../utils/utils.js";
 
 const calculateDistance = (point1, point2) => {
   return Math.sqrt(
@@ -27,15 +27,8 @@ async function convertLandmarksToScreenCoords(landmark) {
   return screenCoords;
 }
 
-async function moveMouse(handedness, landmarks) {
-  var index = 0;
-  /* if (handedness[0][0].category_name == "Left" || handedness.length == 1) {
-    index = 0;
-  } else {
-    index = 1;
-  } */
-
-  const indexFingerTip = landmarks[8];
+async function moveMouse(landmarks) {
+  const indexFingerTip = landmarks[landmark2id["INDEX_FINGER_TIP"]];
 
   const screenCoords = await convertLandmarksToScreenCoords(indexFingerTip);
   await mouse.move(straightTo(screenCoords));
@@ -44,12 +37,26 @@ async function moveMouse(handedness, landmarks) {
 async function detectClick(handedness, landmarks) {
   const right_hand_index = 1;
 
-  const thumb = landmarks[right_hand_index][4];
-  const index_finger = landmarks[right_hand_index][8];
+  const thumb = landmarks[right_hand_index][landmark2id["THUMB_TIP"]];
+  const index_finger =
+    landmarks[right_hand_index][landmark2id["INDEX_FINGER_TIP"]];
 
-  const distance = calculateDistance(thumb, index_finger);
-  if (distance < 0.05) {
-    await mouse.leftClick();
+  try {
+    const distance = calculateDistance(thumb, index_finger);
+    if (distance < 0.05) {
+      await mouse.leftClick();
+    }
+  } catch (error) {
+    console.error("Error in detectClick", error);
   }
 }
-export { moveMouse, detectClick };
+
+const getHandIndex = (configHand) => {
+  if (configHand === "Left") {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+
+export { moveMouse, detectClick, getHandIndex };
