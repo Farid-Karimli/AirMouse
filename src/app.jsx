@@ -18,7 +18,6 @@ const App = () => {
   const [webcamRunning, setWebcamRunning] = useState(true);
   const handLandmarkerRef = useRef(null); // Use useRef for mutable handLandmarker
   const [lastVideoTime, setLastVideoTime] = useState(-1);
-  const [results, setResults] = useState(null);
   const animationFrameId = useRef(null); // Track the animation frame ID
   const [smoothedLandmarks, setSmoothedLandmarks] = useState(-1);
 
@@ -115,17 +114,17 @@ const App = () => {
         moveMouse(smoothed);
 
         if (newResults.landmarks.length > 1) {
-          console.log(
-            "Index 0 handedness: ",
-            newResults.handedness[0][0].categoryName
-          );
-          console.log(
-            "Index 1 handedness: ",
-            newResults.handedness[1][0].categoryName
-          );
-          console.log(
-            `Index of ${configuration.mainHand} hand: ${handIndex}  `
-          );
+          // console.log(
+          //   "Index 0 handedness: ",
+          //   newResults.handedness[0][0].categoryName
+          // );
+          // console.log(
+          //   "Index 1 handedness: ",
+          //   newResults.handedness[1][0].categoryName
+          // );
+          // console.log(
+          //   `Index of ${configuration.mainHand} hand: ${handIndex}  `
+          // );
 
           detectClick(newResults.handedness, newResults.landmarks);
         }
